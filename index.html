@@ -3,72 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Consulta de API</title>
-    <style>
-        /* Estilos CSS para el diseño */
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-        }
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        #results {
-            margin-top: 20px;
-        }
-    </style>
+    <title>Disney Characters</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="container">
-        <h1>Consulta de API</h1>
-        <form id="apiForm">
-            <label for="urlInput">Ingrese la URL:</label>
-            <input type="text" id="urlInput" name="urlInput" required>
-            <button type="submit">Consultar</button>
-        </form>
-        <div id="results"></div>
-    </div>
+    <div id="characters-container"></div>
 
-    <script>
-        // Función para consultar la API y mostrar los resultados
-        document.getElementById('apiForm').addEventListener('submit', function(event) {
-            event.preventDefault(); // Evitar que se recargue la página
-
-            const url = document.getElementById('urlInput').value;
-            const apiUrl = `https://api.urlparse.com/v1/query?url=${encodeURIComponent(url)}`;
-
-            fetch(apiUrl)
-                .then(response => response.json())
-                .then(data => {
-                    // Procesar los resultados y mostrarlos en la página
-                    const resultsContainer = document.getElementById('results');
-                    resultsContainer.innerHTML = ''; // Limpiar resultados anteriores
-
-                    const topLevelData = data.topLevelData;
-                    const nestedData = data.nestedData;
-
-                    const topLevelList = document.createElement('ul');
-                    topLevelList.innerHTML = `<li>Top Level Data: ${topLevelData}</li>`;
-                    resultsContainer.appendChild(topLevelList);
-
-                    const nestedList = document.createElement('ul');
-                    nestedData.forEach(item => {
-                        const listItem = document.createElement('li');
-                        listItem.textContent = item;
-                        nestedList.appendChild(listItem);
-                    });
-                    resultsContainer.appendChild(nestedList);
-                })
-                .catch(error => {
-                    console.error('Error al consultar la API:', error);
-                    // Mostrar mensaje de error en la página
-                    const resultsContainer = document.getElementById('results');
-                    resultsContainer.innerHTML = `<p>Error al consultar la API: ${error.message}</p>`;
-                });
-        });
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>
+
