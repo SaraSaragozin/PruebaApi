@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cat Facts</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+  }
+  .container {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  h1 {
+    text-align: center;
+  }
+  .fact {
+    margin-bottom: 10px;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>Cat Facts</h1>
+  <div id="facts"></div>
+</div>
+
+<script>
+  async function fetchData() {
+    const response = await fetch('https://cat-fact.herokuapp.com/facts');
+    const data = await response.json();
+    return data;
+  }
+
+  async function displayFacts() {
+    const factsContainer = document.getElementById('facts');
+    factsContainer.innerHTML = ''; // Limpiar el contenido anterior
+
+    const data = await fetchData();
+    data.forEach(async fact => {
+      const factElement = document.createElement('div');
+      factElement.classList.add('fact');
+      const factText = document.createTextNode(fact.text);
+      factElement.appendChild(factText);
+
+      // Consulta anidada para obtener información adicional sobre el autor
+      const authorResponse = await fetch(`https://cat-fact.herokuapp.com/users/${fact.user}`);
+      const authorData = await authorResponse.json();
+      const authorName = document.createElement('p');
+      authorName.textContent = `Author: ${authorData.name.first} ${authorData.name.last}`;
+      factElement.appendChild(authorName);
+
+      factsContainer.appendChild(factElement);
+    });
+  }
+
+  displayFacts();
+</script>
+</body>
+</html>
